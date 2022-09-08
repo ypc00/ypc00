@@ -475,34 +475,34 @@
 <p>有一个j从3到4再到3的过程，所以这有一个回溯的过程，当情况变得复杂时，这种挨个遍历的方式就会很耗时，所以KMP算法出现了</p>
 <h1 id="KMP算法："><a href="#KMP算法：" class="headerlink" title="KMP算法："></a>KMP算法：</h1><p>KMP算法是针对朴素的模式匹配算法提出的，是关于字符串匹配的一种算法，为的就是减少上面的回溯过程</p>
 <p>如下图所示，检测到箭头所示位置时，模式串（黄色）与主串（蓝色）已经不匹配</p>
-<p><img src="/KMP%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93.assets/aa-16625185028651.png" alt="aa"></p>
+<p><img src="/images/KMP/aa-16625185028651.png" alt="aa"></p>
 <p>此时的做法是，找到模式串中的公共最长前后缀</p>
-<p><img src="/KMP%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93.assets/image-20220907160819907.png" alt="image-20220907160819907"></p>
+<p><img src="/images/KMP/image-20220907160819907.png" alt="image-20220907160819907"></p>
 <p>将前缀移动到后缀的位置，在开始比较</p>
-<p><img src="/KMP%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93.assets/image-20220907161038102.png" alt="image-20220907161038102"></p>
+<p><img src="/images/KMP/image-20220907161038102.png" alt="image-20220907161038102"></p>
 <p><strong>这么做的原因是？</strong></p>
 <p>因为此时模式串与主串箭头左边已经完全相同，再挨个比较已经没有意义，如下图所示，挨个过去比较模式串肯定与主串不能匹配，但是有了公共前后缀就不一样了，<strong>可以得知模式串的前缀和主串的后缀相同</strong>，所以将模式串的前缀移动到后缀的位置后，是存在模式串与主串匹配的可能性的，这就是要找到模式串公共前后缀的原因，也是将模式串的前缀移动到后缀的原因</p>
-<p><img src="/KMP%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93.assets/image-20220907161115440.png" alt="image-20220907161115440"></p>
+<p><img src="/images/KMP/image-20220907161115440.png" alt="image-20220907161115440"></p>
 <p>所以接下来要做的就是分析模式串在每一个位置检测到不匹配之后，模式串向右移动的长度，也就是找公共前后缀，找到后，再把前缀移动到后缀位置，从前缀的后一位与主串的对应位置比较</p>
 <p>如下图所示，若到1号位不匹配，则1号位与主串下一位比较</p>
 <p>若到2号位不匹配，找左边的公共前后缀，长度为0（公共前后缀长度一定要小于左边长度，否则若公共前后缀长度等于左边长度，没有意义），所以用1号位与主串当前位置比较</p>
 <p>若到3号位不匹配，左边为AB，无公共前后缀，长度为0，用1号位与主串当前位置比较</p>
 <p>若到4号位不匹配，左边为ABA，公共前后缀为A，长度为1，用2号位与主串当前位置比较（把1号位移动到3号位的位置，即前缀移动到后缀的位置，所以是用二号位与主串当前位置比较）</p>
 <p>若到5号位不匹配，左边为ABAB，公共前后缀为AB，长度为2，用3号位与主串当前位置比较</p>
-<p><img src="/KMP%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93.assets/image-20220907222938403.png" alt="image-20220907222938403"></p>
+<p><img src="/images/KMP/image-20220907222938403.png" alt="image-20220907222938403"></p>
 <p>若到6号位不匹配，左边为ABABA，公共前后缀为ABA，长度为3，用4号位与主串当前位置比较（前缀移动到后缀的位置后，4号位与主串当前位置比较）</p>
 <p>可以发现，与主串比较的号位，就是等于最大公共前后缀长度+1，也很好理解，把前缀移动到后缀位置，比较的位置就是此时前缀右边的一个位置，即之前不匹配的位置，比较的号位自然就是最大公共前后缀长度+1</p>
-<p><img src="/KMP%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93.assets/image-20220907164144614.png" alt="image-20220907164144614"></p>
+<p><img src="/images/KMP/image-20220907164144614.png" alt="image-20220907164144614"></p>
 <p>将所有值的出来后，即可得到数组next[12]&#x3D;{0,1,1,2,3,4,2,2,3,4,5,6}，即下一步数组，检测到在此位置不匹配时，模式串下一步与主串比较的位置</p>
-<p><img src="/KMP%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93.assets/image-20220907225343101.png" alt="image-20220907225343101"></p>
+<p><img src="/images/KMP/image-20220907225343101.png" alt="image-20220907225343101"></p>
 <p><strong>总结：KMP算法就是相对于朴素的模式匹配算法，减少了主串比较下标回溯的过程</strong></p>
 <p>求next数组代码逻辑的理解：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">get_next</span><span class="params">(string T,<span class="type">int</span> *next)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> i = <span class="number">1</span>,k = <span class="number">0</span>;</span><br><span class="line">    next[<span class="number">1</span>] = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (i &lt; T[<span class="number">0</span>]) &#123;</span><br><span class="line">        <span class="keyword">if</span> (k == <span class="number">0</span> || T[i] = T[k]) &#123;</span><br><span class="line">            ++i;</span><br><span class="line">            ++k;</span><br><span class="line">            next[i] = k;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            k = next[k];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/KMP%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93.assets/4316914e6a60b830349fa13118a1419.jpg" alt="4316914e6a60b830349fa13118a1419"></p>
+<p><img src="/images/KMP/4316914e6a60b830349fa13118a1419.jpg" alt="4316914e6a60b830349fa13118a1419"></p>
 <p>这就是为什么当T[i] 不等于 T[k]时，k值回溯的原因，即解释了 k &#x3D; next[k]</p>
 <p>参考视频：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1jb411V78H?spm_id_from=333.1007.top_right_bar_window_custom_collection.content.click">「天勤公开课」KMP算法易懂版_哔哩哔哩_bilibili</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV16X4y137qw?spm_id_from=333.337.search-card.all.click&vd_source=39bbb60dc8bbeeaf4695088ff3777b01">KMP算法之求next数组代码讲解_哔哩哔哩_bilibili</a></p>
+<p>[KMP算法之求next数组代码讲解_哔哩哔哩_bilibili](</p>
 
                 
             </div>
@@ -529,7 +529,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://ypc00.github.io/2022/09/08/kmp-suan-fa-xue-xi-zong-jie/">https://ypc00.github.io/2022/09/08/kmp-suan-fa-xue-xi-zong-jie/</a>
+                    <a href="https://ypc00.github.io/2022/09/08/kmp/">https://ypc00.github.io/2022/09/08/kmp/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -614,7 +614,7 @@
                 <i class="far fa-dot-circle"></i>&nbsp;本篇
             </div>
             <div class="card">
-                <a href="/2022/09/08/kmp-suan-fa-xue-xi-zong-jie/">
+                <a href="/2022/09/08/kmp/">
                     <div class="card-image">
                         
                         
